@@ -1,5 +1,6 @@
 package com.example.transactions.application.use_cases;
 
+import com.example.transactions.application.dto.StatisticResponse;
 import com.example.transactions.application.ports.in.GetStatisticUseCase;
 import com.example.transactions.application.ports.out.TransactionStorage;
 import com.example.transactions.domain.Statistic;
@@ -17,8 +18,9 @@ public class GetStatisticService implements GetStatisticUseCase {
     }
 
     @Override
-    public Statistic calculate() {
+    public StatisticResponse calculate() {
         List<Transaction> transactions = transactionStorage.getLastMinute();
-        return Statistic.generate(transactions);
+        Statistic statistic = Statistic.generate(transactions);
+        return StatisticResponse.from(statistic);
     }
 }

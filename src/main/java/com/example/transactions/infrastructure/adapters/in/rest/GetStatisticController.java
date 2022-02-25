@@ -1,7 +1,7 @@
 package com.example.transactions.infrastructure.adapters.in.rest;
 
+import com.example.transactions.application.dto.StatisticResponse;
 import com.example.transactions.application.use_cases.GetStatisticService;
-import com.example.transactions.domain.Statistic;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +16,7 @@ public class GetStatisticController {
     }
 
     @GetMapping(path = "/statistics")
-    public ResponseEntity<Statistic> getStatistic() {
+    public ResponseEntity<StatisticResponse> getStatistic() {
         return ResponseEntity.ok(getStatisticService.calculate());
     }
 }
