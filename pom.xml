@@ -6,16 +6,37 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.6.3</version>
-    <relativePath/> <!-- lookup parent from repository -->
   </parent>
+
   <groupId>com.example</groupId>
   <artifactId>transactions</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>transactions</name>
+  <packaging>pom</packaging>
   <description>transactions</description>
+
+  <modules>
+    <module>domain</module>
+    <module>application</module>
+    <module>infrastructure</module>
+    <module>launcher</module>
+  </modules>
+
   <properties>
     <java.version>11</java.version>
+    <kotlin.version>1.6.10</kotlin.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+    <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+    <git-build-hook-maven-plugin.version>3.1.0</git-build-hook-maven-plugin.version>
+    <mockito.kotlin.version>3.2.0</mockito.kotlin.version>
+    <kotest.version>5.0.0.M2</kotest.version>
+    <spring.cloud.starter.version>3.0.3</spring.cloud.starter.version>
+    <okhttp.version>4.9.2</okhttp.version>
+    <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -36,13 +57,66 @@
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
     </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-allopen</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <compilerPlugins>
+            <plugin>spring</plugin>
+          </compilerPlugins>
+          <jvmTarget>1.8</jvmTarget>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.rudikershaw.gitbuildhook</groupId>
+        <artifactId>git-build-hook-maven-plugin</artifactId>
+        <version>${git-build-hook-maven-plugin.version}</version>
+        <configuration>
+          <gitConfig>
+            <core.hooksPath>.githooks</core.hooksPath>
+            <custom.configuration>true</custom.configuration>
+          </gitConfig>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>configure</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
